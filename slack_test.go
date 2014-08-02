@@ -1,16 +1,20 @@
 package main
 
-import "testing"
+import (
+	"testing"
+	"strings"
+)
 
 func TestSendMessage(t *testing.T) {
 
+
 	message := PostMessage{
-		ProjectName  : "AAAAAA PJ",
+		ProjectName  : "Slack-Webhock-Gitlab Project",
 		AuthorName   : "kyokomi",
 		AssigneeName : "kyokomi",
-		Title        : "Test",
-		Description  : "hogehogefuga",
-		CreatedAt    : "2014/08/03 7:53",
+		Title        : "Demo Issue Title",
+		Descriptions : strings.Split("hogehogehoge.\nfugafugafuga?\npiyopiyopiyo!!", "\n"),
+		CreatedAt    : "2014/08/03 7:53:00",
 		State        : "opend",
 	}
 	err := SendMessage(message)

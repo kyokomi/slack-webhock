@@ -8,28 +8,34 @@ import (
 	"bytes"
 )
 
+type TemplateExec struct {
+	Message PostMessage
+}
+
 type PostMessage struct {
 	ProjectName  string
 	AuthorName   string
 	AssigneeName string
 	Title        string
-	Description  string
+	Descriptions []string
 	CreatedAt    string
 	State        string
 }
 
 const messageTemplate = `
-_プロジェクト名: {{.ProjectName}}_
-{{.Title}} {{.Description}} {{.CreatedAt}} *{{.State}}*
-> 作成者: <@{{.AuthorName}}>
-> 担当者: <@{{.AssigneeName}}>
+_{{.Message.Title}}_ *{{.Message.State}}* {{.Message.CreatedAt}}
+
+{{range $idx, $text := .Message.Descriptions}}
+> {{$text}}{{end}}
+ProjectName: *{{.Message.ProjectName}}*
+Author: <@{{.Message.AuthorName}}> Assignee: <@{{.Message.AssigneeName}}>
 `
 
 func SendMessage(message PostMessage) error {
 
 	t := template.Must(template.New("message").Parse(messageTemplate))
 	var buf bytes.Buffer
-	if err := t.Execute(&buf, message); err != nil {
+	if err := t.Execute(&buf, TemplateExec{Message: message}); err != nil {
 		return err
 	}
 

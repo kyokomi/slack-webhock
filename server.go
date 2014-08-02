@@ -5,6 +5,7 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"log"
+	"strings"
 )
 
 const (
@@ -60,7 +61,7 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 		AuthorName   : authorName,
 		AssigneeName : assigneeName,
 		Title        : issues.ObjectAttributes.Title,
-		Description  : issues.ObjectAttributes.Description,
+		Descriptions : strings.Split(issues.ObjectAttributes.Description, "\n"),
 		CreatedAt    : issues.ObjectAttributes.CreatedAt,
 		State        : issues.ObjectAttributes.State,
 	}
