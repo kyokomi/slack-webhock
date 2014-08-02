@@ -8,7 +8,7 @@ import (
 
 func TestGetProjectName(t *testing.T) {
 
-	gitlab := gogitlab.NewGitlab(baseUrl, apiPath, token)
+	gitlab := gogitlab.NewGitlab(baseUrl, apiPath, GetGitlabToken())
 
 	projectName, err := GetProjectName(gitlab, 67040)
 	if err != nil {
@@ -21,7 +21,7 @@ func TestGetProjectName(t *testing.T) {
 
 func TestGetUserName(t *testing.T) {
 
-	gitlab := gogitlab.NewGitlab(baseUrl, apiPath, token)
+	gitlab := gogitlab.NewGitlab(baseUrl, apiPath, GetGitlabToken())
 
 	userName, err := GetUserName(gitlab, 27917)
 	if err != nil {
