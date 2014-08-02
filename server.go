@@ -5,7 +5,6 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"log"
-	"net/http"
 	"fmt"
 )
 
@@ -67,15 +66,8 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 	text = text + fmt.Sprintln("ステータス: ", issues.ObjectAttributes.State)
 	l.Println(text)
 
-	message := fmt.Sprintf("%s: %s (%s) > %s", projectName, issues.ObjectAttributes.Title, issues.ObjectAttributes.State, authorName)
-	url := fmt.Sprintf("https://slack.com/api/chat.postMessage?token=%s&channel=%s&text=%s&pretty=1", GetSlackToken(), GetSlackChannel(), message)
-	res, err := http.Get(url)
-	if err != nil {
-		l.Println(err)
-		return "Error"
-	}
-	l.Println(res)
-
+	message := fmt.Sprintf("%s:%s(%s)_%s", projectName, issues.ObjectAttributes.Title, issues.ObjectAttributes.State, authorName)
+	SendMessage(message)
 	return "OK"
 }
 
