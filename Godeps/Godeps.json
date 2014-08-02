@@ -13,6 +13,10 @@
 			"Rev": "acd8dd3c3f49fe761830351c2710d192193ca236"
 		},
 		{
+			"ImportPath": "github.com/kyokomi/go-gitlab-client/gogitlab",
+			"Rev": "bb85f0298cf679803be4d21c42c5c76885852dfe"
+		},
+		{
 			"ImportPath": "github.com/martini-contrib/binding",
 			"Rev": "1cc43dbd1a72c4d7dd78369934ae70ed6979288d"
 		}
