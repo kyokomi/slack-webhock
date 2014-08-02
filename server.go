@@ -5,7 +5,6 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"log"
-	"strconv"
 )
 
 const (
@@ -34,29 +33,29 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 	l.Println(issues)
 
 	// Project Get
-	project, err := gitlab.Project(strconv.FormatInt(issues.ObjectAttributes.ProjectID, 20))
+	projectName, err := GetProjectName(gitlab, issues.ObjectAttributes.ProjectID)
 	if err != nil {
 		l.Println(err)
 		return "Error"
 	}
-	l.Println("プロジェクト名: ", project.Name)
+	l.Println("プロジェクト名: ", projectName)
 
 	// User Get Author
-	author, err := gitlab.User(strconv.FormatInt(issues.ObjectAttributes.AuthorID, 20))
+	authorName, err := GetUserName(gitlab, issues.ObjectAttributes.AuthorID)
 	if err != nil {
 		l.Println(err)
 		return "Error"
 	}
-	l.Println("作成者: ", author.Name)
+	l.Println("作成者: ", authorName)
 
 	// User Get Assignee
 	if issues.ObjectAttributes.AssigneeID != 0 {
-		assignee, err := gitlab.User(strconv.FormatInt(issues.ObjectAttributes.AssigneeID, 20))
+		assigneeName, err := GetUserName(gitlab, issues.ObjectAttributes.AssigneeID)
 		if err != nil {
 			l.Println(err)
 			return "Error"
 		}
-		l.Println("担当者: ", assignee.Name)
+		l.Println("担当者: ", assigneeName)
 	}
 
 	l.Println("タイトル: ", issues.ObjectAttributes.Title)
