@@ -5,7 +5,6 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"log"
-	"fmt"
 )
 
 const (
@@ -32,15 +31,12 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 
 	l.Println(issues)
 
-	var text string
-
 	// Project Get
 	projectName, err := GetProjectName(gitlab, issues.ObjectAttributes.ProjectID)
 	if err != nil {
 		l.Println(err)
 		return "Error"
 	}
-	text = text + fmt.Sprintln("プロジェクト名: ", projectName)
 
 	// User Get Author
 	authorName, err := GetUserName(gitlab, issues.ObjectAttributes.AuthorID)
@@ -48,26 +44,32 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 		l.Println(err)
 		return "Error"
 	}
-	text = text + fmt.Sprintln("作成者: ", authorName)
 
 	// User Get Assignee
+	var assigneeName string
 	if issues.ObjectAttributes.AssigneeID != 0 {
-		assigneeName, err := GetUserName(gitlab, issues.ObjectAttributes.AssigneeID)
+		assigneeName, err = GetUserName(gitlab, issues.ObjectAttributes.AssigneeID)
 		if err != nil {
 			l.Println(err)
 			return "Error"
 		}
-		text = text + fmt.Sprintln("担当者: ", assigneeName)
 	}
 
-	text = text + fmt.Sprintln("タイトル: ", issues.ObjectAttributes.Title)
-	text = text + fmt.Sprintln("内容: ", issues.ObjectAttributes.Description)
-	text = text + fmt.Sprintln("作成日: ", issues.ObjectAttributes.CreatedAt)
-	text = text + fmt.Sprintln("ステータス: ", issues.ObjectAttributes.State)
-	l.Println(text)
+	message := PostMessage{
+		ProjectName  : projectName,
+		AuthorName   : authorName,
+		AssigneeName : assigneeName,
+		Title        : issues.ObjectAttributes.Title,
+		Description  : issues.ObjectAttributes.Description,
+		CreatedAt    : issues.ObjectAttributes.CreatedAt,
+		State        : issues.ObjectAttributes.State,
+	}
+	l.Println(message)
 
-	message := fmt.Sprintf("%s:%s(%s)_%s", projectName, issues.ObjectAttributes.Title, issues.ObjectAttributes.State, authorName)
-	SendMessage(message)
+	if err := SendMessage(message); err != nil {
+		l.Println(err)
+		return "Error"
+	}
 	return "OK"
 }
 

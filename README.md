@@ -6,6 +6,20 @@ slack-webhock
 
 slack webhock golang
 
+## Demo
+
+### Input
+
+Created Gitlab new Issue.
+
+![](https://raw.githubusercontent.com/kyokomi/slack-webhock/master/manual/demo1.png)
+
+### Output
+
+PostMessage Slack.
+
+
+
 ## Install
 
 ## Local
