@@ -5,6 +5,8 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
 	"log"
+	"net/http"
+	"fmt"
 )
 
 const (
@@ -32,13 +34,15 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 
 	l.Println(issues)
 
+	var text string
+
 	// Project Get
 	projectName, err := GetProjectName(gitlab, issues.ObjectAttributes.ProjectID)
 	if err != nil {
 		l.Println(err)
 		return "Error"
 	}
-	l.Println("プロジェクト名: ", projectName)
+	text = text + fmt.Sprintln("プロジェクト名: ", projectName)
 
 	// User Get Author
 	authorName, err := GetUserName(gitlab, issues.ObjectAttributes.AuthorID)
@@ -46,7 +50,7 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 		l.Println(err)
 		return "Error"
 	}
-	l.Println("作成者: ", authorName)
+	text = text + fmt.Sprintln("作成者: ", authorName)
 
 	// User Get Assignee
 	if issues.ObjectAttributes.AssigneeID != 0 {
@@ -55,13 +59,21 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 			l.Println(err)
 			return "Error"
 		}
-		l.Println("担当者: ", assigneeName)
+		text = text + fmt.Sprintln("担当者: ", assigneeName)
 	}
 
-	l.Println("タイトル: ", issues.ObjectAttributes.Title)
-	l.Println("内容: ", issues.ObjectAttributes.Description)
-	l.Println("作成日: ", issues.ObjectAttributes.CreatedAt)
-	l.Println("ステータス: ", issues.ObjectAttributes.State)
+	text = text + fmt.Sprintln("タイトル: ", issues.ObjectAttributes.Title)
+	text = text + fmt.Sprintln("内容: ", issues.ObjectAttributes.Description)
+	text = text + fmt.Sprintln("作成日: ", issues.ObjectAttributes.CreatedAt)
+	text = text + fmt.Sprintln("ステータス: ", issues.ObjectAttributes.State)
+	l.Println(text)
+
+	res, err := http.Get("https://slack.com/api/chat.postMessage?token=xoxp-2311903184-2311903186-2507218985-be003d&channel=C0295SK5L&text=" + issues.ObjectAttributes.Title + "&pretty=1")
+	if err != nil {
+		l.Println(err)
+		return "Error"
+	}
+	l.Println(res)
 
 	return "OK"
 }
