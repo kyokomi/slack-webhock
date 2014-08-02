@@ -5,3 +5,31 @@ slack-webhock
 =============
 
 slack webhock golang
+
+## Install
+
+## Local
+
+`~/.bash_profile`
+
+`{}`は、自分の設定
+
+```sh
+# personal-dev
+export GITLAB_TOKEN={YOUR_GITLAB_TOKEN}
+export SLACK_TOKEN={YOUR_SLACK_TOKEN}
+export SLACK_CHANNEL={TARGET_SLACK_CHANNEL}
+```
+
+### wercker
+
+![](https://raw.githubusercontent.com/kyokomi/slack-webhock/master/manual/wercker_setup.png)
+
+### heroku
+
+![](https://raw.githubusercontent.com/kyokomi/slack-webhock/master/manual/heroku_setup.png)
+
+### gitlab
+
+![](https://raw.githubusercontent.com/kyokomi/slack-webhock/master/manual/gitlab_setup.png)
+
