@@ -12,12 +12,11 @@ import (
 const (
 	baseUrl = "https://gitlab.com"
 	apiPath = "/api/v3"
-	// TODO: あとで環境変数にする
-	token = "T5giqDC8dtz9ukx9D16B"
 )
+
 func main() {
 
-	gitlab := gogitlab.NewGitlab(baseUrl, apiPath, token)
+	gitlab := gogitlab.NewGitlab(baseUrl, apiPath, GetGitlabToken())
 
 	m := martini.Classic()
 	m.Get("/", func() string {
@@ -68,7 +67,9 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 	text = text + fmt.Sprintln("ステータス: ", issues.ObjectAttributes.State)
 	l.Println(text)
 
-	res, err := http.Get("https://slack.com/api/chat.postMessage?token=xoxp-2311903184-2311903186-2507218985-be003d&channel=C0295SK5L&text=" + issues.ObjectAttributes.Title + "&pretty=1")
+	message := fmt.Sprintf("%s: %s (%s) > %s", projectName, issues.ObjectAttributes.Title, issues.ObjectAttributes.State, authorName)
+	url := fmt.Sprintf("https://slack.com/api/chat.postMessage?token=%s&channel=%s&text=%s&pretty=1", GetSlackToken(), GetSlackChannel(), message)
+	res, err := http.Get(url)
 	if err != nil {
 		l.Println(err)
 		return "Error"
