@@ -1,21 +1,20 @@
 package main
 
 import (
-	"github.com/kyokomi/go-gitlab-client/gogitlab"
 	"github.com/go-martini/martini"
+	"github.com/kyokomi/go-gitlab-client/gogitlab"
 	"github.com/martini-contrib/binding"
 	"log"
 	"strings"
 )
 
 const (
-	baseUrl = "https://gitlab.com"
 	apiPath = "/api/v3"
 )
 
 func main() {
 
-	gitlab := gogitlab.NewGitlab(baseUrl, apiPath, GetGitlabToken())
+	gitlab := gogitlab.NewGitlab(GetGitlabBaseUrl(), apiPath, GetGitlabToken())
 
 	m := martini.Classic()
 	m.Get("/", func() string {
@@ -57,13 +56,13 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 	}
 
 	message := PostMessage{
-		ProjectName  : projectName,
-		AuthorName   : authorName,
-		AssigneeName : assigneeName,
-		Title        : issues.ObjectAttributes.Title,
-		Descriptions : strings.Split(issues.ObjectAttributes.Description, "\n"),
-		CreatedAt    : issues.ObjectAttributes.CreatedAt,
-		State        : issues.ObjectAttributes.State,
+		ProjectName:  projectName,
+		AuthorName:   authorName,
+		AssigneeName: assigneeName,
+		Title:        issues.ObjectAttributes.Title,
+		Descriptions: strings.Split(issues.ObjectAttributes.Description, "\n"),
+		CreatedAt:    issues.ObjectAttributes.CreatedAt,
+		State:        issues.ObjectAttributes.State,
 	}
 	l.Println(message)
 
@@ -73,4 +72,3 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 	}
 	return "OK"
 }
-

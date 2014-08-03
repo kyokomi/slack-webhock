@@ -1,14 +1,13 @@
 package main
 
 import (
-	"testing"
 	"github.com/kyokomi/go-gitlab-client/gogitlab"
+	"testing"
 )
-
 
 func TestGetProjectName(t *testing.T) {
 
-	gitlab := gogitlab.NewGitlab(baseUrl, apiPath, GetGitlabToken())
+	gitlab := gogitlab.NewGitlab(GetGitlabBaseUrl(), apiPath, GetGitlabToken())
 
 	projectName, err := GetProjectName(gitlab, 67040)
 	if err != nil {
@@ -21,7 +20,7 @@ func TestGetProjectName(t *testing.T) {
 
 func TestGetUserName(t *testing.T) {
 
-	gitlab := gogitlab.NewGitlab(baseUrl, apiPath, GetGitlabToken())
+	gitlab := gogitlab.NewGitlab(GetGitlabBaseUrl(), apiPath, GetGitlabToken())
 
 	userName, err := GetUserName(gitlab, 27917)
 	if err != nil {
