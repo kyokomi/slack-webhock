@@ -26,10 +26,9 @@ PostMessage Slack.
 
 `~/.bash_profile`
 
-`{}`は、自分の設定
-
 ```sh
 # personal-dev
+export GITLAB_BASE_URL=http://gitlab.com
 export GITLAB_TOKEN={YOUR_GITLAB_TOKEN}
 export SLACK_TOKEN={YOUR_SLACK_TOKEN}
 export SLACK_CHANNEL={TARGET_SLACK_CHANNEL}
