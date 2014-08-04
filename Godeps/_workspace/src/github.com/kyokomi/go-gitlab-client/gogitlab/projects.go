@@ -138,6 +138,19 @@ func (g *Gitlab) ProjectMembers(id string) ([]*Member, error) {
 	return members, err
 }
 
+func (g *Gitlab) ProjectMilestones(projectId string) ([]*Milestone, error) {
+	url, opaque := g.ResourceUrlRaw(project_url_milestones, map[string]string{":id": projectId})
+
+	var milestones []*Milestone
+
+	contents, err := g.buildAndExecRequestRaw("GET", url, opaque, nil)
+	if err == nil {
+		err = json.Unmarshal(contents, &milestones)
+	}
+
+	return milestones, err
+}
+
 func (g *Gitlab) ProjectMilestone(projectId, milestoneId string) (*Milestone, error) {
 	url, opaque := g.ResourceUrlRaw(project_url_milestone, map[string]string{":id": projectId, ":milestone_id": milestoneId})
 

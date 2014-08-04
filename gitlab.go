@@ -6,16 +6,16 @@ import (
 )
 
 
-func GetProjectName(gitlab *gogitlab.Gitlab, projectId int64) (string, error) {
-	project, err := gitlab.Project(strconv.FormatInt(projectId, 10))
+func GetProjectName(gitlab *gogitlab.Gitlab, projectId int) (string, error) {
+	project, err := gitlab.Project(strconv.Itoa(projectId))
 	if err != nil {
 		return "", err
 	}
 	return project.Name, nil
 }
 
-func GetUserName(gitlab *gogitlab.Gitlab, userId int64) (string, error) {
-	user, err := gitlab.User(strconv.FormatInt(userId, 10))
+func GetUserName(gitlab *gogitlab.Gitlab, userId int) (string, error) {
+	user, err := gitlab.User(strconv.Itoa(userId))
 	if err != nil {
 		return "", err
 	}
@@ -23,8 +23,8 @@ func GetUserName(gitlab *gogitlab.Gitlab, userId int64) (string, error) {
 }
 
 //	/projects/:id/milestones/:milestone_id
-func GetMilestoneTitle(gitlab *gogitlab.Gitlab, projectId, milestoneId int64) (string, error) {
-	milestone, err := gitlab.ProjectMilestone(strconv.FormatInt(projectId, 10), strconv.FormatInt(milestoneId, 10))
+func GetMilestoneTitle(gitlab *gogitlab.Gitlab, projectId, milestoneId int) (string, error) {
+	milestone, err := gitlab.ProjectMilestone(strconv.Itoa(projectId), strconv.Itoa(milestoneId))
 	if err != nil {
 		return "", err
 	}
