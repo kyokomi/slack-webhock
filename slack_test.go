@@ -16,6 +16,7 @@ func TestSendMessage(t *testing.T) {
 		Descriptions : strings.Split("hogehogehoge.\nfugafugafuga?\npiyopiyopiyo!!", "\n"),
 		CreatedAt    : "2014/08/03 7:53:00",
 		State        : "opend",
+		Milestone    : "v0.0.1",
 	}
 	err := SendMessage(message)
 

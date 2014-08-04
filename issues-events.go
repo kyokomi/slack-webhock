@@ -9,7 +9,7 @@ type IssuesEvents struct {
 		Description string      `json:"description"`
 		ID          int64       `json:"id"`
 		Iid         int64       `json:"iid"`
-		MilestoneID interface{} `json:"milestone_id"`
+		MilestoneID int64       `json:"milestone_id"`
 		Position    int64       `json:"position"`
 		ProjectID   int64       `json:"project_id"`
 		State       string      `json:"state"`
