@@ -5,13 +5,15 @@ import (
 )
 
 const (
-	projects_url         = "/projects"                         // Get a list of projects owned by the authenticated user
-	projects_search_url  = "/projects/search/:query"           // Search for projects by name
-	project_url          = "/projects/:id"                     // Get a specific project, identified by project ID or NAME
-	project_url_events   = "/projects/:id/events"              // Get project events
-	project_url_branches = "/projects/:id/repository/branches" // Lists all branches of a project
-	project_url_members  = "/projects/:id/members"             // List project team members
-	project_url_member   = "/projects/:id/members/:user_id"    // Get project team member
+	projects_url           = "/projects"                              // Get a list of projects owned by the authenticated user
+	projects_search_url    = "/projects/search/:query"                // Search for projects by name
+	project_url            = "/projects/:id"                          // Get a specific project, identified by project ID or NAME
+	project_url_events     = "/projects/:id/events"                   // Get project events
+	project_url_branches   = "/projects/:id/repository/branches"      // Lists all branches of a project
+	project_url_members    = "/projects/:id/members"                  // List project team members
+	project_url_member     = "/projects/:id/members/:user_id"         // Get project team member
+	project_url_milestones = "/projects/:id/milestones"               // Get project milestones
+	project_url_milestone  = "/projects/:id/milestones/:milestone_id" // Get project milestone
 )
 
 type Member struct {
@@ -52,6 +54,18 @@ type Project struct {
 	Namespace            *Namespace `json:"namespace,omitempty"`
 	SshRepoUrl           string     `json:"ssh_url_to_repo"`
 	HttpRepoUrl          string     `json:"http_url_to_repo"`
+}
+
+type Milestone struct {
+	CreatedAt   string  `json:"created_at"`
+	Description string  `json:"description"`
+	DueDate     string  `json:"due_date"`
+	ID          int     `json:"id"`
+	Iid         int     `json:"iid"`
+	ProjectID   int     `json:"project_id"`
+	State       string  `json:"state"`
+	Title       string  `json:"title"`
+	UpdatedAt   string  `json:"updated_at"`
 }
 
 /*
@@ -122,4 +136,17 @@ func (g *Gitlab) ProjectMembers(id string) ([]*Member, error) {
 	}
 
 	return members, err
+}
+
+func (g *Gitlab) ProjectMilestone(projectId, milestoneId string) (*Milestone, error) {
+	url, opaque := g.ResourceUrlRaw(project_url_milestone, map[string]string{":id": projectId, ":milestone_id": milestoneId})
+
+	var milestone *Milestone
+
+	contents, err := g.buildAndExecRequestRaw("GET", url, opaque, nil)
+	if err == nil {
+		err = json.Unmarshal(contents, &milestone)
+	}
+
+	return milestone, err
 }
