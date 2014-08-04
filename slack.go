@@ -46,8 +46,8 @@ func SendMessage(message PostMessage) error {
 		"token":      {GetSlackToken()},
 		"channel":    {GetSlackChannel()},
 		"text":       {buf.String()},
-		"username":   {"Gitlab"},
-		"icon_emoji": {":beers:"},
+		"username":   {GetSlackBotName()},
+		"icon_emoji": {GetSlackBotIcon()},
 	})
 	if err != nil {
 		return err

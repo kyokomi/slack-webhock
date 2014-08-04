@@ -17,3 +17,11 @@ func GetSlackToken() string {
 func GetSlackChannel() string {
 	return os.Getenv("SLACK_CHANNEL")
 }
+
+func GetSlackBotName() string {
+	return "Gitlab"
+}
+
+func GetSlackBotIcon() string {
+	return ":beers:"
+}
