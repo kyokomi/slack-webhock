@@ -29,7 +29,7 @@ _{{.Message.Title}}_ *{{.Message.State}}* {{.Message.CreatedAt}}
 {{range $idx, $text := .Message.Descriptions}}
 > {{$text}}{{end}}
 ProjectName: *{{.Message.ProjectName}}* {{with .Message.Milestone}}({{.}}){{end}}
-Author: <@{{.Message.AuthorName}}> Assignee: <@{{.Message.AssigneeName}}>
+Author: <@{{.Message.AuthorName}}> {{with .Message.AssigneeName}}Assignee: <@{{.}}>{{end}}
 `
 
 func SendMessage(message PostMessage) error {

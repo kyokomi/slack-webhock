@@ -56,10 +56,13 @@ func doIssuesEvents(l *log.Logger, issues IssuesEvents, gitlab *gogitlab.Gitlab)
 	}
 
 	// Milestone Get Title
-	milestoneTitle, err := GetMilestoneTitle(gitlab, issues.ObjectAttributes.ProjectID, issues.ObjectAttributes.MilestoneID)
-	if err != nil {
-		l.Println(err)
-		return "Error"
+	var milestoneTitle string
+	if issues.ObjectAttributes.MilestoneID != 0 {
+		milestoneTitle, err = GetMilestoneTitle(gitlab, issues.ObjectAttributes.ProjectID, issues.ObjectAttributes.MilestoneID)
+		if err != nil {
+			l.Println(err)
+			return "Error"
+		}
 	}
 
 	message := PostMessage{
