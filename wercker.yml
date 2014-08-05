@@ -21,19 +21,12 @@ build:
         code: |
           go build ./...
 
-    # Coveralls the project
-    - script:
-        name: go get coveralls
-        code: |
-          go get code.google.com/p/go.tools/cmd/cover
-          go get github.com/mattn/goveralls
-
     # Test the project
     - script:
         name: go test
         code: |
           go test ./... -covermode=count -coverprofile=coverage.out
-          $(go env GOPATH | awk 'BEGIN{FS=":"} {print $1}')/bin/goveralls -coverprofile=coverage.out -service=wercker -repotoken $COVERALLS_TOKEN
+          #goveralls -coverprofile=coverage.out -service=wercker -repotoken $COVERALLS_TOKEN
 
 deploy:
   steps:
