@@ -6,6 +6,7 @@ import (
 	"github.com/martini-contrib/binding"
 	"log"
 	"strings"
+	"flag"
 )
 
 const (
@@ -13,6 +14,8 @@ const (
 )
 
 func main() {
+
+	flag.Parse()
 
 	gitlab := gogitlab.NewGitlab(GetGitlabBaseUrl(), apiPath, GetGitlabToken())
 
